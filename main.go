@@ -2,14 +2,16 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"go/ast"
 	"go/format"
 	"go/parser"
 	"go/token"
-	"io"
 	"os"
 	"strings"
 )
+
+var errSkipErase = errors.New("skip erase")
 
 func main() {
 	eraseComment("main.go", "/dev/stdout")
@@ -25,7 +27,7 @@ func eraseComment(src, dst string) error {
 
 	// If the AST is generated, just copy the file
 	if ast.IsGenerated(node) {
-		return copyFile(src, dst)
+		return errSkipErase
 	}
 
 	// Erase all comments from the AST
@@ -72,27 +74,4 @@ func eraseComment(src, dst string) error {
 
 func isSpecialComment(c *ast.Comment) bool {
 	return strings.HasPrefix(c.Text, "//go:")
-}
-
-func copyFile(src, dst string) error {
-	r, err := os.Open(src)
-	if err != nil {
-		return err
-	}
-	defer r.Close()
-
-	stat, err := r.Stat()
-	if err != nil {
-		return err
-	}
-
-	w, err := os.OpenFile(dst, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, stat.Mode())
-	if err != nil {
-		return err
-	}
-	_, err = io.Copy(w, r)
-	if err1 := w.Close(); err1 != nil && err == nil {
-		err = err1
-	}
-	return err
 }
