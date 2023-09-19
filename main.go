@@ -28,7 +28,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+	err = filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
 		if info.IsDir() {
 			if strings.HasPrefix(info.Name(), ".") || info.Name() == "testdata" {
 				return filepath.SkipDir
@@ -43,6 +46,9 @@ func main() {
 		}
 		return nil
 	})
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func eraseComment(src string) error {
