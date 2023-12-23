@@ -11,7 +11,7 @@ go install github.com/shogo82148/go-comment-eraser@latest
 ```
 
 ```console
-go-comment-eraser $PATH_TO_SOURCE_DIRECTORY
+go-comment-eraser [-generated] $PATH_TO_SOURCE_DIRECTORY
 ```
 
 ## Examples

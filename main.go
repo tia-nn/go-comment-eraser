@@ -17,6 +17,12 @@ import (
 
 var errSkipErase = errors.New("skip erase")
 
+var generatedFlag bool
+
+func init() {
+	flag.BoolVar(&generatedFlag, "generated", false, "include generated files in target.")
+}
+
 func main() {
 	flag.Parse()
 	if flag.NArg() != 1 {
@@ -82,7 +88,7 @@ func parseFile(src string) ([]byte, error) {
 	}
 
 	// If the AST is generated, just copy the file
-	if ast.IsGenerated(node) {
+	if !generatedFlag && ast.IsGenerated(node) {
 		return nil, errSkipErase
 	}
 
