@@ -7,7 +7,7 @@ Remove all comments from Go source code.
 Install the command.
 
 ```console
-go install github.com/shogo82148/go-comment-eraser@latest
+go install github.com/tia-nn/go-comment-eraser@latest
 ```
 
 ```console
@@ -17,7 +17,7 @@ go-comment-eraser [-generated] $PATH_TO_SOURCE_DIRECTORY
 ## Examples
 
 ```console
-go-comment-eraser github.com/shogo82148/go-comment-eraser
+go-comment-eraser github.com/tia-nn/go-comment-eraser
 ```
 
 ```diff
